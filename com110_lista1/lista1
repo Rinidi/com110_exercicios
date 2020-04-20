@@ -1,0 +1,40 @@
+ALGORITMO
+    DECLARE n1, n2, n3, media NUMÉRICO
+    ESCREVA "Digite as três notas: "
+    LEIA n1, n2, n3
+    media <- (n1 + n2 + n3)/3
+    ESCREVA "A média aritmética é: ", media
+FIM_ALGORITMO
+
+ALGORITMO
+    DECLARE n1, n2, n3, p1, p2, p3, mediaPon NUMÉRICO
+    ESCREVA "Digite a primeira nota e o seu peso: "
+    LEIA n1, p1
+    ESCREVA "Digite a segunda nota e o seu peso: "
+    LEIA n2, p2
+    ESCREVA "Digite a terceira nota e o seu peso: "
+    LEIA n3, p3
+    mediaPon <- ((n1*p1)+(n2*p2)+(n3*p3))/(p1+p2+p3)
+    ESCREVA "A média ponderada é: ", mediaPon
+FIM_ALGORITMO
+
+ALGORITMO
+    DECLARE salario, salarioReajustado NUMÉRICO
+    ESCREVA "Entre com o seu salário: "
+    LEIA salario
+    salarioReajustado <- salario * 1,25
+    ESCREVA "Seu salário reajustado é: ", salarioReajustado
+FIM_ALGORITMO
+
+ALGORITMO
+    DECLARE sal, salReaj, porcReaj, reaj NUMÉRICO
+    ESCREVA "Entre com o seu salário: "
+    LEIA sal
+    ESCREVA "Qual o percentual de aumento? "
+    LEIA porcReaj
+    reaj <- sal*(porcReaj/100)
+    salReaj <- sal + reaj
+    ESCREVA "Houve um aumento de R$", reaj, ",00 e seu novo
+    salário é R$", salReaj, ",00"    
+FIM_ALGORITMO
+
