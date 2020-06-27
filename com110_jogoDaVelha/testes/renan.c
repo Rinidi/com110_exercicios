@@ -24,6 +24,12 @@ int main()
     int botJogX, botJogY, botVi = 0, turno = 0;
     int lin = 0, col = 0;
     char M[n][n];
+
+    // Declaração de variaveis para o placar
+    FILE *arq;
+    char nome[50];
+    int pontos;
+    //
     struct user u;
     u.jogos = 0;
     u.wins = 0;

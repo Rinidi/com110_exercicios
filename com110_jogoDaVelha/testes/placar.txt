@@ -1,0 +1,7 @@
+Renan: 210
+Lucas: 200
+Pedro: 300
+Renan: 210
+aaaa: 20
+bunda: 333
+Cucabeludo: 666
