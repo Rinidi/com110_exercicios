@@ -16,6 +16,7 @@ struct user
 int verificaVitoria(char M[3][3]);
 void zeraMatriz(char M[3][3]);
 void zeraVariaveis(int turno, int win, int velha, int aux, int usuVi);
+void organizaPlacar(int* pontuacao, char nomes[][100], int tamanho);
 
 int main()
 {
@@ -27,8 +28,15 @@ int main()
 
     // Declaracao de variaveis para o placar
     FILE *arq;
-    char nome[50];
-    int pontos;
+    
+    // Variaveis responsaveis pelos valores placar
+    char placarNomes[10][100];
+    int placarWins[10];
+    
+    //Variaveis qu vão receber o valor do arquivo
+    char placarNome[100];
+    int placarWin;
+    int placarTam = 0;
     
     //Declaracao da estrutura
     struct user u;
@@ -96,7 +104,7 @@ int main()
 				}
             }
 
-            // Inicio das jogadas
+            // Inicio da partida
             while (aux != 0)
             {
                 //system("cls"); //Comando para limpar a tela no windows
@@ -269,27 +277,53 @@ int main()
             }
             break;
         case 2:
-			//system("cls"); //Comando para limpar a tela no windows
+			system("cls"); //Comando para limpar a tela no windows
             //printf("\e[H\e[2J"); // Comando para limpar a tela no linux
             
-            arq = fopen("placat.txt", "a");
+            //Abertura do arquivo com verificação de erro
+            arq = fopen("placar.txt", "r");
             if(arq == NULL){
             	printf("Erro ao abrir o arquivo!\n");
             	return 0;
 			}
 			
+			//Armazenamento dos valores recebidos do arquivo em vetores
+			while(fscanf(arq, "%s %d", placarNome, &placarWin)!=EOF){
+				strcpy(placarNomes[placarTam], placarNome);
+				placarWins[placarTam] = placarWin;
+				placarTam++;
+			}
+			
+			//Organiza os valores recebidos
+			if(placarTam != 0){
+				organizaPlacar(placarWins, placarNomes, placarTam);
+			}
+			
+			//Mostra os valores organizados
+			printf("------------Ranking------------\n");
+			if(!placarTam){
+				printf("Sem registros no ranking!\n");
+			}else{
+				for(i = 0; i<placarTam; i++){
+					printf(" %s - %d\n", placarNomes[i], placarWins[i]);
+				}
+			}
+				
+			fclose(arq);
             break;
         case 3:
-        	
         	// Ao sair a pontuação do usuário é salva no arquivo
-			arq = fopen("placat.txt", "a");
-            if(arq == NULL){
-            	printf("Erro ao abrir o arquivo!\n");
-            	return 0;
+        	if(u.jogos != 0 ){
+        		arq = fopen("placar.txt", "a");
+	            if(arq == NULL){
+	            	printf("Erro ao abrir o arquivo!\n");
+	            	return 0;
+				}
+				fprintf(arq, "%s ", u.name);
+				fprintf(arq, "%d\n", u.wins);
+				fclose(arq);
 			}
-			fprintf("%s ", u.name);
-			fprintf("%d\n", u.wins);
-			fclose(arq);
+			
             break;
         default:
             printf("\nOpcao Invalida, tente novamente\n\n");
@@ -354,4 +388,25 @@ void zeraMatriz(char M[3][3])
             M[i][j] = ' ';
         }
     }
+}
+
+void organizaPlacar(int* pontuacao, char nomes[][100], int tam){
+	int i;
+	int mudou;
+	do{
+		mudou = 0;
+		for(i=tam; i>0; i--){
+			if(pontuacao[i]> pontuacao[i-1]){
+				int pAux;
+				char nAux[100];
+				pAux = pontuacao[i];
+				strcpy(nAux, nomes[i]);
+				pontuacao[i] = pontuacao[i-1];
+				strcpy(nomes[i], nomes[i-1]);
+           		pontuacao[i-1] = pAux;
+            	strcpy(nomes[i-1], nAux);
+            	mudou = 1;
+			}
+		}
+	}while(mudou);
 }
