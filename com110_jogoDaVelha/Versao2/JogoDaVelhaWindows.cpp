@@ -2,47 +2,48 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Declaração da struct para armanezamento
-* temporário das informações do usuário
+/* 
+*	Estrutura para armanezamento temporario das 
+*	informacoeses do usuario como quantidade de jogos
+*	e quantidade de vit�rias
 */
 struct user
 {
     char name[50];
     int wins, jogos, simbol;
 };
-/*
-* Declaração das funções
-*/
+// Declaracao das funcoes
 int verificaVitoria(char M[3][3]);
 void zeraMatriz(char M[3][3]);
 void zeraVariaveis(int turno, int win, int velha, int aux, int usuVi);
 
 int main()
 {
-    // Declaração das variáveis
+    // Declaracao das variaveis
     int n = 3, aux = 1, op = 0, win = 0, velha = 0, usuVi = 0, i, j;
     int botJogX, botJogY, botVi = 0, turno = 0;
     int lin = 0, col = 0;
-    char M[n][n];
+    char M[3][3];
 
-    // Declaração de variaveis para o placar
+    // Declaracao de variaveis para o placar
     FILE *arq;
     char nome[50];
     int pontos;
-    //
+    
+    //Declaracao da estrutura
     struct user u;
     u.jogos = 0;
     u.wins = 0;
 
-    //Preenchendo a Matriz 3x3 com espaços em branco
+    //Preenchendo a Matriz 3x3 com espacos em branco
     zeraMatriz(M);
-    // Utilização da estrutura DOWHILE como menu de seleção de opções
+    // Utilizacao da estrutura DOWHILE como menu de selecao de opcoes
     do
     {
         //Amostragem do Menu
         printf("----------------Menu----------------\n");
         //Esquema para printagem diferente
-        //caso não seja o primeiro jogo
+        //caso seja o primeiro jogo
         if (!u.jogos)
         {
             printf("\t1. Jogar\n");
@@ -51,53 +52,60 @@ int main()
         {
             printf("\t1. Jogar Novamente\n");
         }
-        printf("\t2. Sair\n");
+        printf("\t2. Mostrar Ranking\n");
+        printf("\t3. Sair\n");
         printf("------------------------------------\n");
         printf(" Opcao: ");
-        //Leitura da variável controladora do looping
         scanf("%d", &op);
         ////////Fim Menu//////////
-        /*if (!u.jogos && op == 1)
-        {
-            op = 3;
-        }*/
+        // Switch utilizando a variavel que contem a opcao do usuario
         switch (op)
         {
         case 1:
             system("cls");       //Comando para limpar a tela no windows
             //printf("\e[H\e[2J"); // Comando para limpar a tela no linux
 
-            /*
-            *Armazenando o nome do usuario;
-            *Caso não seja o primeiro jogo
-            */
+            // Executa este trecho SE for o primeiro jogo
             if (!u.jogos)
             {
                 printf("Entre com o nome do usuario: ");
                 scanf("%s", u.name);
+                
+                //Leitura do simbolo do jogador
+            	do{
+	            	printf("Escolha com qual simbolo deseja jogar:\n\t1 . X\n\t2 . O\n");
+		            printf("Opcao: ");
+		            scanf("%d", &u.simbol);
+	            	if (u.simbol != 1 && u.simbol != 2)
+            		{
+                		printf("\nOpcao Invalida!, ira jogar com X\n");
+            		}
+				}while(u.simbol!=1 && u.simbol!=2);
+				
+				// L�gica para sortear o jogador iniciante
+				turno = rand() % 2;
+				printf("Para uma dificuldade o primeiro jogador sera escolhido aleatoriamente\n");
+            	printf("O primeiro a jogar sera: ");
+           	 	if(turno)
+				{
+            		printf("A maquina\n");
+				}
+				else
+				{
+					printf("Voce\n");
+				}
             }
-            //Leitura do símbolo do jogador
-            do{
-            	printf("Escolha com qual simbolo deseja jogar:\n\t1 . X\n\t2 . O\n");
-	            printf("Opcao: ");
-	            scanf("%d", &u.simbol);
-	            if (u.simbol != 1 && u.simbol != 2)
-            	{
-                	printf("\nOpcao Invalida!, ira jogar com X\n");
-            	}
-			}while(u.simbol!=1 && u.simbol!=2);
-			
 
-            
-            printf("aux: %d\n", aux);
+            // Inicio das jogadas
             while (aux != 0)
             {
                 //system("cls"); //Comando para limpar a tela no windows
                 //printf("\e[H\e[2J"); // Comando para limpar a tela no linux
-                // Estrutura de repetição For para mostrar o tabuleiro
+                
+                //Printagem do tabuleiro
                 if (!turno || botVi || usuVi)
                 {
-                    ////Printagem do tabuleiro////
+                    // Estrutura de repeticao For para mostrar o tabuleiro
                     for(i = 0; i < (n + 2); i++)
                     {
                         printf("\t");
@@ -105,7 +113,7 @@ int main()
                         {
                             if (i != 1 && i != 3)
                             {
-                                //Espaços à serem preenchidos
+                                //Espacos a serem preenchidos
                                 if (i == 4)
                                 {
                                     printf(" %c ", M[i - 2][j]);
@@ -138,22 +146,24 @@ int main()
                         }
                         printf("\n");
                     }
-                    ////Fim da printagem do tabuleiro////
+                    // Verifica se houve vit�ria
                     if (win)
                     {
                         aux = 0;
                         break;
                     }
                 }
-                // Separação dos turnos entre o bot e o usuário
-                // Usuário
+                //Fim da printagem do tabuleiro
+                
+                // Usuario
                 if (!turno && !win && !velha)
                 {
-                    ////Jogada do usuario
+                    
+					//Jogada do usuario
                     do{
                         /*
-                        * Loop para verificar se o a posição 
-                        * escolhida pelo usuário já esxiste 
+                        * Loop � necess�rio para verificar se o a  
+                        * posicao escolhida pelo usuario ja esxiste 
                         * dentro da matriz de caracteres
                         */
                         printf("\nJogador: %s", u.name);
@@ -161,15 +171,17 @@ int main()
                         scanf("%d", &lin);
                         printf("Digite a coluna: ");
                         scanf("%d", &col);
-                        // Verifica se a posição escolhida está vazia
-                        if(M[lin-1][col-1] == ' '){
+                        col--;
+                        lin--;
+                        // Verifica se a posicao escolhida esta vazia
+                        if(M[lin][col] == ' '){
                             if (u.simbol == 1)
                             {
-                                M[lin - 1][col - 1] = 'X';
+                                M[lin][col] = 'X';
                             }
                             else
                             {
-                                M[lin - 1][col - 1] = 'O';
+                                M[lin][col] = 'O';
                             }
                             turno = 1;
                         }else
@@ -177,10 +189,10 @@ int main()
                             printf("\nPosicao invalida!,tente novamente\n");
                         }
                     }while(!turno);
-                    //Verificação  de vitória do jogador ao fim de cada jogada
+                    //Verificacao  de vitoria do jogador ao fim de cada jogada
                     win = verificaVitoria(M);
                     if(win){
-                        //variavel que corresponde à vitoria do jogador
+                        //variavel que corresponde a vitoria do jogador
                         usuVi = 1;
                     }
                 }
@@ -191,8 +203,8 @@ int main()
                     do
                     {
                         /*
-                        * Loop para verificar se o número
-                        * aleatório tirado pelo bot já existe
+                        * Loop para verificar se o numero
+                        * aleatorio sortead pelo bot ja existe
                         * dentro da matriz de caracteres
                         */
                         botJogX = (rand() % 3);
@@ -215,7 +227,7 @@ int main()
                         {
                             turno = 1;
                         }
-                        //Verificação de Vítoria do bot ao fim de cada jogada
+                        //Verificacao de Vitoria do bot ao fim de cada jogada
                         win = verificaVitoria(M);
                         if(win){
                             botVi = 1;
@@ -257,40 +269,67 @@ int main()
             }
             break;
         case 2:
-
+			//system("cls"); //Comando para limpar a tela no windows
+            //printf("\e[H\e[2J"); // Comando para limpar a tela no linux
+            
+            arq = fopen("placat.txt", "a");
+            if(arq == NULL){
+            	printf("Erro ao abrir o arquivo!\n");
+            	return 0;
+			}
+			
+            break;
+        case 3:
+        	
+        	// Ao sair a pontua��o do usu�rio � salva no arquivo
+			arq = fopen("placat.txt", "a");
+            if(arq == NULL){
+            	printf("Erro ao abrir o arquivo!\n");
+            	return 0;
+			}
+			fprintf("%s ", u.name);
+			fprintf("%d\n", u.wins);
+			fclose(arq);
             break;
         default:
             printf("\nOpcao Invalida, tente novamente\n\n");
             break;
         }
-    //  zeraVariaveis(turno, win, velha, aux, usuVi);
+    	//  zeraVariaveis(turno, win, velha, aux, usuVi);
         turno = 0;
         win = 0;
         velha = 0;
         aux = 1;
         usuVi = 0;
-    } while (op != 2);
+    } while (op != 3);
     /* 
-    * Se a opção selecionada no menu for 2, ou seja sair,
-    * O programa sai da estrutura de repetição
+    * Se a opcao selecionada no menu for 2, ou seja sair,
+    * O programa sai da estrutura de repeticao
     */
     return 0;
 }
 
 int verificaVitoria(char M[3][3])
 {
+	/*
+	*	Funcao responsavel por verificar cada
+	*	cada possiblidade de vitoria assim que
+	*	cada jogador realiza uma jogada
+	*/
     int res = 0;
     if ((M[0][0] == M[0][1] && M[0][1] == M[0][2] && M[0][2] != ' ') ||
         (M[1][0] == M[1][1] && M[1][1] == M[1][2] && M[1][2] != ' ') ||
         (M[2][0] == M[2][1] && M[2][1] == M[2][2] && M[2][2] != ' ') ||
         //Vitoria por linhas
+        
         (M[0][0] == M[1][0] && M[1][0] == M[2][0] && M[2][0] != ' ') ||
         (M[0][1] == M[1][1] && M[1][1] == M[2][1] && M[2][1] != ' ') ||
         (M[0][2] == M[1][2] && M[1][2] == M[2][2] && M[2][2] != ' ') ||
         //Vitoria por colunas
+        
         (M[0][0] == M[1][1] && M[1][1] == M[2][2] && M[2][2] != ' ') ||
         (M[2][0] == M[1][1] && M[1][1] == M[0][2] && M[0][2] != ' '))
-    //Vitoria por Diagonais
+    	//Vitoria por Diagonais
     {
         res = 1;
     }
@@ -298,11 +337,20 @@ int verificaVitoria(char M[3][3])
 }
 void zeraMatriz(char M[3][3])
 {
+	/*
+	* Esta funcao realiza a limpagem da matriz preenchendo cada
+	* espaco da mesma com um espaco vazio, utiliza a passagem
+	* de parametro por referencia para que se faca as operacoes
+	* direto na posicao da matriz na memoria.
+	*/
 	int i, j;
+	
+	// Duas estruturas for para percorrer a matriz por completo
     for(i = 0; i < 3; i++)
     {
         for (j = 0; j < 3; j++)
         {
+        	//Cada posicao recebe um espaco como valor
             M[i][j] = ' ';
         }
     }

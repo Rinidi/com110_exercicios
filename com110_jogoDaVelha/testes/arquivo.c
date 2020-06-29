@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include <curses.h>
+#include <conio.h>
 //#include <conio.h>
 
 int main(){
@@ -11,6 +11,7 @@ int main(){
     do{
         printf("--------Menu--------\n");
         printf("1 - Gravar\n");
+        printf("Rand: %d\n", rand() % 2);
         printf("2 - Exibir\n");
         printf("3 - Sair\n");
         printf("--------------------\n");
@@ -43,7 +44,7 @@ int main(){
         
             break;
         default:
-            printf("Opção inválida");
+            printf("Opcao invalida");
             break;
         }
     }while(op!=3);
