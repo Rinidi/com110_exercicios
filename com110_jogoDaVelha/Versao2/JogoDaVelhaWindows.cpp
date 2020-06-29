@@ -305,11 +305,16 @@ int main()
 				printf("Sem registros no ranking!\n");
 			}else{
 				for(i = 0; i<placarTam; i++){
-					printf(" %s - %d\n", placarNomes[i], placarWins[i]);
+					printf(" %d.\t %s - %d\n",i+1, placarNomes[i], placarWins[i]);
 				}
 			}
-				
 			fclose(arq);
+			if(u.jogos != 0){
+				printf("--------------Voce-------------\n");
+				printf(" %s - %d\n", u.name, u.wins);
+				printf("-------------------------------\n");
+			}
+			
             break;
         case 3:
         	// Ao sair a pontuação do usuário é salva no arquivo
@@ -335,6 +340,7 @@ int main()
         velha = 0;
         aux = 1;
         usuVi = 0;
+        placarTam = 0;
     } while (op != 3);
     /* 
     * Se a opcao selecionada no menu for 2, ou seja sair,
