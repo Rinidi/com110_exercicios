@@ -1,8 +1,4 @@
-Renan 3
 Joao 2
 Pedro 4
 Cleiton 5
-teste 1
-voce 1
-EUUUUU 1
-Cavalinho 1
+Renan 4

@@ -15,7 +15,6 @@ struct user
 // Declaracao das funcoes
 int verificaVitoria(char M[3][3]);
 void zeraMatriz(char M[3][3]);
-void zeraVariaveis(int turno, int win, int velha, int aux, int usuVi);
 void organizaPlacar(int* pontuacao, char nomes[][100], int tamanho);
 
 int main()
@@ -89,10 +88,11 @@ int main()
                 		printf("\nOpcao Invalida!, ira jogar com X\n");
             		}
 				}while(u.simbol!=1 && u.simbol!=2);
-				
+				system("cls");  
 				// Lógica para sortear o jogador iniciante
 				turno = rand() % 2;
-				printf("Para uma dificuldade o primeiro jogador sera escolhido aleatoriamente\n");
+				printf("Para uma dificuldade maior, o primeiro jogador\nsera escolhido aleatoriamente");
+				printf(" e o jogador perdedor\niniciara proxima partida.\n");
             	printf("O primeiro a jogar sera: ");
            	 	if(turno)
 				{
@@ -107,7 +107,7 @@ int main()
             // Inicio da partida
             while (aux != 0)
             {
-                //system("cls"); //Comando para limpar a tela no windows
+            	//system("cls"); //Comando para limpar a tela no windows
                 //printf("\e[H\e[2J"); // Comando para limpar a tela no linux
                 
                 //Printagem do tabuleiro
@@ -334,16 +334,19 @@ int main()
             printf("\nOpcao Invalida, tente novamente\n\n");
             break;
         }
-    	//  zeraVariaveis(turno, win, velha, aux, usuVi);
-        turno = 0;
+        /*
+			Ao zerar todas as variáveis menos o turno é permitido que
+        	cada jogo seja iniciado pelo perdedor da partida anterior
+		*/
         win = 0;
         velha = 0;
         aux = 1;
         usuVi = 0;
         placarTam = 0;
+        botVi = 0;
     } while (op != 3);
     /* 
-    * Se a opcao selecionada no menu for 2, ou seja sair,
+    * Se a opcao selecionada no menu for 3, ou seja sair,
     * O programa sai da estrutura de repeticao
     */
     return 0;
